@@ -11,14 +11,10 @@
 git clone https://github.com/GimbaLabs/baids-daedalus.git ~/.baids/functions.d/baids-daedalus
 ```
 * Load functions using baids/bash
-
-## Using baids
-
-`baids-reload`
-
-## Plain bash
-
 ```
+# Using baids
+baids-reload
+# Using plain bash
 source baids-daedalus/*
 ```
 
