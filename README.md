@@ -1,8 +1,21 @@
+# Overview
+
+This ~100 lines of bash code enables anyone using Daedalus to send metadata-rich transactions today.
+
+We encourage you to try on Testnet first. For this, you can download [Daedalus for Testnet][daedalus-testnet], ask for some funds in [the faucet][testnet-faucet] and, maybe, check the metadata went through using GimbaLabs' [postgREST][gimbalabs-postgrest] endpoint!
+
+[daedalus-testnet]: https://developers.cardano.org/en/testnets/cardano/get-started/wallet/
+[testnet-faucet]: https://developers.cardano.org/en/testnets/cardano/tools/faucet/
+[gimbalabs-postgrest]: https://gimbalabs.com/#/open-source-apis/postgrest-api
+
 # Requirements
 
+* Daedalus
 * bash (or [baids][baids])
 * jq
 * lsof (linux only) 
+
+[baids]: https://github.com/rcmorano/baids
 
 # Installation
 
@@ -38,5 +51,3 @@ daedalus-cli-send-tx-with-metadata-string \
 # Example
 
 [![asciicast](https://asciinema.org/a/377053.svg)](https://asciinema.org/a/377053)
-
-[baids]: https://github.com/rcmorano/baids
