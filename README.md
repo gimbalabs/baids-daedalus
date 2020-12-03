@@ -39,7 +39,7 @@ source baids-daedalus/*
 ```
 daedalus-cli-run-cardano-wallet
 ```
-* Open another terminal and try to send a transaction tagged with some metadata (it will ask you for your spending password **NOT YOUR 25-WORDS MNEMONICS**):
+* Open another terminal and try to send a transaction tagged with some metadata (it will ask you for your spending password **NOT YOUR 24-WORDS MNEMONICS**):
 ```
 daedalus-cli-send-tx-with-metadata-string \
   $DAEDALUS_WALLET_NAME \
