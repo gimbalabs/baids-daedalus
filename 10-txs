@@ -21,8 +21,7 @@ function daedalus-cli-send-tx() {
   
   cardano-wallet transaction create \
     ${WALLET_ID} \
-    --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
-    --metadata '{ "0": { "map": [ { "k" : { "string" : "order_id" }, "v" : { "int": 0 } } ]}}'
+    --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS}
 
 }
 
