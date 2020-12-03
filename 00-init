@@ -27,7 +27,7 @@ function daedalus-cli-init-linux() {
   export CARDANO_NODE_SOCKET_PATH=$(pgrep -fa cardano-wallet.*tls | sed -e 's|.*\(--node-socket\) \(.*cardano-node.socket\).*|\2|g')
 
   # Make Daedalus' binaries available to our shell
-  CARDANO_BRIDGE_NIX_STORE_BINDIR="~/.daedalus/$(dirname $(lsof -np $(pgrep -af cardano-wallet | grep -v "grep\|tls" | awk '{print $1}') 2>/dev/null | grep bin.cardano-wallet | awk '{print $NF}' | sed -e 's|\(^/tmp.*\)/\(nix.*\)|\2|'))"
+  CARDANO_BRIDGE_NIX_STORE_BINDIR="~/.daedalus/$(dirname $(lsof -np $(pgrep -af cardano-wallet.*tls | grep -v "grep" | awk '{print $1}') 2>/dev/null | grep bin.cardano-wallet | awk '{print $NF}' | sed -e 's|\(^/tmp.*\)/\(nix.*\)|\2|'))"
   PATH=${PATH}:${CARDANO_BRIDGE_NIX_STORE_BINDIR}
 
 }
@@ -35,7 +35,7 @@ function daedalus-cli-init-linux() {
 function daedalus-cli-run-cardano-wallet() {
 
   daedalus-cli-init
-  $(pgrep -a cardano-wallet | sed -e 's|--shutdown.*--database|--database|' -e 's|--tls.*metadata||' -e 's|^\([0-9]\+\) ||' -e "s|/nix/store|$HOME/.daedalus/nix/store|")
+  $(pgrep -fa cardano-wallet.*tls | sed -e 's|--shutdown.*--database|--database|' -e 's|--tls.*metadata||' -e 's|^\([0-9]\+\) ||' -e "s|/nix/store|$HOME/.daedalus/nix/store|")
 
 }
 
