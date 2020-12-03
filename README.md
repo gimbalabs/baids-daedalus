@@ -32,7 +32,7 @@ daedalus-cli-send-tx-with-metadata-string \
   $DAEDALUS_WALLET_NAME \
   $LOVELACE_AMOUNT \
   $DESTINATION_ADDRESS \
-  write anything here and it will be attached as metadata, for example: ORDER_ID=42
+  maybe,put,some,csv,row,here,order_id=42
 ```
 
 # Example
