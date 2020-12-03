@@ -1,0 +1,45 @@
+#!/bin/bash
+
+function daedalus-cli-get-wallet-id() {
+
+  daedalus-cli-init
+  WALLET_NAME=$1
+  WALLET_ID=$(cardano-wallet wallet list 2>/dev/null | jq -r --arg name ${WALLET_NAME} '.[] | select(.name==$name) | .id')
+
+  echo $WALLET_ID
+
+}
+
+function daedalus-cli-send-tx() {
+
+  daedalus-cli-init
+  WALLET_NAME="$1" # must match Daedalus' name in case sensitive
+  TX_AMOUNT="$2" # in lovelaces, 1000000 = 1ADA
+  TX_DEST_ADDRESS="$3"
+
+  WALLET_ID=$(daedalus-cli-get-wallet-id ${WALLET_NAME})
+  
+  cardano-wallet transaction create \
+    ${WALLET_ID} \
+    --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
+    --metadata '{ "0": { "map": [ { "k" : { "string" : "order_id" }, "v" : { "int": 0 } } ]}}'
+
+}
+
+
+function daedalus-cli-send-tx-with-metadata-string() {
+
+  daedalus-cli-init
+  WALLET_NAME="$1" # must match Daedalus' name in case sensitive
+  TX_AMOUNT="$2" # in lovelaces, 1000000 = 1ADA
+  TX_DEST_ADDRESS="$3"
+  TX_META_STRING=$(echo $@ | sed "s|$1 $2 $3 ||")
+
+  WALLET_ID=$(daedalus-cli-get-wallet-id ${WALLET_NAME})
+
+  cardano-wallet transaction create \
+    ${WALLET_ID} \
+    --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
+    --metadata "{ \"0\":{ \"string\":\"${TX_META_STRING}\" } }"
+
+}
