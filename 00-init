@@ -6,9 +6,11 @@ function daedalus-cli-init() {
   case "${UNAME}" in
     Darwin*)
       daedalus-cli-init-darwin
+      OS=darwin
     ;;
     Linux*)
       daedalus-cli-init-linux  
+      OS=linux
     ;;
   esac
 
@@ -35,7 +37,30 @@ function daedalus-cli-init-linux() {
 function daedalus-cli-run-cardano-wallet() {
 
   daedalus-cli-init
-  $(pgrep -fa cardano-wallet.*tls | sed -e 's|--shutdown.*--database|--database|' -e 's|--tls.*metadata||' -e 's|^\([0-9]\+\) ||' -e "s|/nix/store|$HOME/.daedalus/nix/store|")
+  case "${OS}" in
+    darwin)
+      if [ ! -z $(pgrep -fl cardano-wallet.*tls | grep testnet) ]
+      then
+        NETWORK=Testnet
+        cardano-wallet serve \
+          --$(echo $NETWORK |  tr "[:upper:]" "[:lower:]") \
+          --shutdown-handler \
+          --database "${HOME}/Library/Application Support/Daedalus ${NETWORK}/wallets" \
+          --node-socket "${HOME}/Library/Application Support/Daedalus ${NETWORK}/cardano-node.socket"
+      else
+        NETWORK=Mainnet
+        cardano-wallet serve \
+          --$(echo $NETWORK |  tr "[:upper:]" "[:lower:]") \
+          --shutdown-handler \
+          --database "${HOME}/Library/Application Support/Daedalus ${NETWORK}/wallets" \
+          --node-socket "${HOME}/Library/Application Support/Daedalus ${NETWORK}/cardano-node.socket"
+      fi
+    ;;
+    linux)
+      $(pgrep -fa cardano-wallet.*tls | sed -e 's|--shutdown.*--database|--database|' -e 's|--tls.*metadata||' -e 's|^\([0-9]\+\) ||' -e "s|/nix/store|$HOME/.daedalus/nix/store|")
+    ;;
+  esac
+
 
 }
 
