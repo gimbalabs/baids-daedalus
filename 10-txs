@@ -25,7 +25,7 @@ function daedalus-cli-send-tx() {
 
 }
 
-
+# https://github.com/input-output-hk/cardano-wallet/wiki/TxMetadata#examples
 function daedalus-cli-send-tx-with-metadata-string() {
 
   daedalus-cli-init
@@ -39,6 +39,6 @@ function daedalus-cli-send-tx-with-metadata-string() {
   cardano-wallet transaction create \
     ${WALLET_ID} \
     --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
-    --metadata "{ \"0\":{ \"string\":\"${TX_META_STRING}\" } }"
+    --metadata "{ \"1337\":{ \"string\":\"${TX_META_STRING}\" } }"
 
 }
