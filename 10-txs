@@ -45,7 +45,7 @@ function daedalus-cli-send-tx-with-metadata-string() {
      --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
      --metadata "{ \"${TX_META_KEY}\":{ \"string\":\"${TX_META_STRING}\" } }"
   else
-    SPLIT_TX_META_STRING=$(echo ${TX_META_STRING} | fold -sw 63 | jq -rcRs 'split("\n") | del(.[] |  select(. == "")) | map(split(":")|{string:.[0]}?)')
+    SPLIT_TX_META_STRING=$(echo ${TX_META_STRING} | fold -sw 63 | jq -rcRs 'split("\n") | del(.[] |  select(. == "")) | to_entries[] | {string:.value}' | jq -rcs | iconv -t utf-8)
     cardano-wallet transaction create \
       ${WALLET_ID} \
       --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
@@ -65,7 +65,7 @@ function daedalus-cli-send-tx-with-metadata-from-text-file() {
 
   WALLET_ID=$(daedalus-cli-get-wallet-id ${WALLET_NAME})
 
-  SPLIT_TX_META_STRING=$(cat "${TX_META_TEXT_FILE}" | fold -sw 63 | jq -rcRs 'split("\n") | del(.[] |  select(. == "")) | map(split(":")|{string:.[0]}?)')
+  SPLIT_TX_META_STRING=$(cat "${TX_META_TEXT_FILE}" | fold -sw 63 | jq -rcRs 'split("\n") | del(.[] |  select(. == "")) | to_entries[] | {string:.value}' | jq -rcs | iconv -t utf-8)
 
   cardano-wallet transaction create \
     ${WALLET_ID} \
