@@ -1,6 +1,6 @@
 # Overview
 
-This ~100 lines of bash code enables anyone using Daedalus to send metadata-rich transactions today.
+These ~100 lines of bash code enables anyone using Daedalus to send metadata-rich transactions today.
 
 We encourage you to try on Testnet first. For this, you can download [Daedalus for Testnet][daedalus-testnet], ask for some funds in [the faucet][testnet-faucet] and, maybe, check the metadata went through using GimbaLabs' [postgREST][gimbalabs-postgrest] endpoint!
 
