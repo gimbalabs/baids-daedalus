@@ -18,8 +18,8 @@ function daedalus-cli-init() {
 
 function daedalus-cli-init-darwin() {
 
-  export CARDANO_NODE_SOCKET_PATH=$(ps ax | grep -v grep | grep cardano-node.run.*socket | sed -e 's|.*\(--socket-path\) \(.*cardano-node.socket\) --.*|\2|g')
-  if [ ! -z "$(pgrep -fl cardano-wallet.*tls | grep -i flight)" ]
+  export CARDANO_NODE_SOCKET_PATH=$(ps ax | grep -v grep | grep 'cardano-node.run.*socket' | sed -e 's|.*\(--socket-path\) \(.*cardano-node.socket\) --.*|\2|g')
+  if [ ! -z "$(pgrep -fl 'cardano-wallet.*tls' | grep -i flight)" ]
   then
     WORKING_DIR="Flight"
   else
@@ -46,7 +46,7 @@ function daedalus-cli-run-cardano-wallet() {
   daedalus-cli-init
   case "${OS}" in
     darwin)
-      if [ ! -z $(pgrep -fl cardano-wallet.*tls | grep testnet) ]
+      if [ ! -z $(pgrep -fl 'cardano-wallet.*tls' | grep testnet) ]
       then
         cardano-wallet serve \
           --testnet \

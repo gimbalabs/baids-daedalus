@@ -28,7 +28,7 @@ git clone https://github.com/GimbaLabs/baids-daedalus.git ~/.baids/functions.d/b
 # Using baids
 baids-reload
 # Using plain bash
-source baids-daedalus/*
+source baids-daedalus/[0-9]*
 ```
 
 # Usage
@@ -51,3 +51,7 @@ daedalus-cli-send-tx-with-metadata-string \
 # Example
 
 [![asciicast](https://asciinema.org/a/377053.svg)](https://asciinema.org/a/377053)
+
+
+
+# back to the roots
