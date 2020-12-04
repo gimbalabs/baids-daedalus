@@ -19,7 +19,14 @@ function daedalus-cli-init() {
 function daedalus-cli-init-darwin() {
 
   CARDANO_NODE_SOCKET_PATH=$(ps ax | grep -v grep | grep cardano-node.run.*socket | sed -e 's|.*\(--socket-path\) \(.*cardano-node.socket\) --.*|\2|g')
-  PATH=${PATH}:"/Applications/Daedalus Mainnet.app/Contents/MacOS"
+  if [ ! -z $(pgrep -fl cardano-wallet.*tls | grep -i flight) ]
+  then
+    WORKING_DIR="Flight"
+  else
+    WORKING_DIR="Mainnet"
+  fi
+
+  PATH=${PATH}:"/Applications/Daedalus ${WORKING_DIR}.app/Contents/MacOS"
 
 }
 
@@ -47,12 +54,6 @@ function daedalus-cli-run-cardano-wallet() {
           --database "${HOME}/Library/Application Support/Daedalus Testnet/wallets" \
           --node-socket "${HOME}/Library/Application Support/Daedalus Testnet/cardano-node.socket"
       else
-        if [ ! -z $(pgrep -fl cardano-wallet.*tls | grep -i flight) ]
-        then
-          WORKING_DIR="Flight"
-        else
-          WORKING_DIR="Mainnet"
-        fi
         cardano-wallet serve \
           --mainnet \
           --shutdown-handler \
