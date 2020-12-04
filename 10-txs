@@ -45,7 +45,7 @@ function daedalus-cli-send-tx-with-metadata-string() {
      --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
      --metadata "{ \"${TX_META_KEY}\":{ \"string\":\"${TX_META_STRING}\" } }"
   else
-    SPLIT_TX_META_STRING=$(echo ${TX_META_STRING} | awk '{gsub(/.{64}/,"& \n")}1' | jq -rcRs 'split("\n") | del(.[] |  select(. == "")) | map(split(":")|{string:.[0]}?)')
+    SPLIT_TX_META_STRING=$(echo ${TX_META_STRING} | awk '{gsub(/.{63}/,"& \n")}1' | jq -rcRs 'split("\n") | del(.[] |  select(. == "")) | map(split(":")|{string:.[0]}?)')
     cardano-wallet transaction create \
       ${WALLET_ID} \
       --payment ${TX_AMOUNT}@${TX_DEST_ADDRESS} \
