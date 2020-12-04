@@ -41,19 +41,23 @@ function daedalus-cli-run-cardano-wallet() {
     darwin)
       if [ ! -z $(pgrep -fl cardano-wallet.*tls | grep testnet) ]
       then
-        NETWORK=Testnet
         cardano-wallet serve \
-          --$(echo $NETWORK |  tr "[:upper:]" "[:lower:]") \
+          --testnet \
           --shutdown-handler \
-          --database "${HOME}/Library/Application Support/Daedalus ${NETWORK}/wallets" \
-          --node-socket "${HOME}/Library/Application Support/Daedalus ${NETWORK}/cardano-node.socket"
+          --database "${HOME}/Library/Application Support/Daedalus Testnet/wallets" \
+          --node-socket "${HOME}/Library/Application Support/Daedalus Testnet/cardano-node.socket"
       else
-        NETWORK=Mainnet
+        if [ ! -z $(pgrep -fl cardano-wallet.*tls | grep -i flight) ]
+        then
+          WORKING_DIR="Flight"
+        else
+          WORKING_DIR="Mainnet"
+        fi
         cardano-wallet serve \
-          --$(echo $NETWORK |  tr "[:upper:]" "[:lower:]") \
+          --mainnet \
           --shutdown-handler \
-          --database "${HOME}/Library/Application Support/Daedalus ${NETWORK}/wallets" \
-          --node-socket "${HOME}/Library/Application Support/Daedalus ${NETWORK}/cardano-node.socket"
+          --database "${HOME}/Library/Application Support/Daedalus ${WORKING_DIR}/wallets" \
+          --node-socket "${HOME}/Library/Application Support/Daedalus ${WORKING_DIR}/cardano-node.socket"
       fi
     ;;
     linux)
