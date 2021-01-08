@@ -1,0 +1,66 @@
+#!/bin/bash
+
+function daedalus-cli-convert-json-to-cardano-wallet-arg() {
+
+  JS_SCRIPT="${HOME}/.local/bin/convert-json-to-cardano-wallet-arg.js"
+  METADATA_KEY="$1"
+  JSON_FILE="$(echo $@ | sed "s|$1 ||")"
+
+  if [ ! -e "${JS_SCRIPT}" ]
+  then
+    cat > "${JS_SCRIPT}" <<"EOF"
+#!/usr/bin/env node
+
+function txMetadataValueFromJS(jsVal) {
+  if (Array.isArray(jsVal)) {
+    // compound type - List
+    // (note that sparse arrays are not representable in JSON)
+    return { list: jsVal.map(txMetadataValueFromJS) };
+  } else if (typeof(jsVal) === 'object') {
+    if (jsVal !== null ) {
+      // compound type - Map with String keys
+      return { map: Object.keys(jsVal).map(key => {
+        return { k: { string: key }, v: txMetadataValueFromJS(jsVal[key]) };
+      }) };
+    } else {
+      // null: convert to simple type - String
+      return { string: 'null' };
+    }
+  } else if (Number.isInteger(jsVal)) {
+    // simple type - Int
+    return { int: jsVal };
+  } else if (typeof(jsVal) === 'string') {
+    // simple type - String
+    return { string: jsVal };
+  } else {
+    // anything else: convert to simple type - String.
+    // e.g. undefined, true, false, NaN, Infinity.
+    // Some of these can't be represented in JSON anyway.
+    // Floating point numbers: note there can be loss of precision when
+    // representing floats as decimal numbers
+    return { string: '' + jsVal };
+  }
+}
+
+const args = process.argv.slice(2);
+const metadataKey = args[0];
+const jsonFile = args[1];
+
+const fs = require('fs');
+const jsVals = new Array(fs.readFileSync(jsonFile, 'utf8'))
+  .map(JSON.parse);
+
+// Convert to transaction metadata JSON form
+const txMetadataValues = jsVals.map(txMetadataValueFromJS);
+const txMetadata = txMetadataValues
+  .reduce((ob, val, i) => { ob['' + metadataKey] = val; return ob; }, {});
+
+// Print JSON to stdout
+console.log(JSON.stringify(txMetadata));
+EOF
+
+  fi
+
+  node "${JS_SCRIPT}" ${METADATA_KEY} ${JSON_FILE}
+
+}
