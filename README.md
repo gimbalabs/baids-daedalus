@@ -14,6 +14,7 @@ We encourage you to try on Testnet first. For this, you can download [Daedalus f
 * bash (or [baids][baids])
 * jq
 * lsof (linux only) 
+* proot (linux only)
 
 [baids]: https://github.com/rcmorano/baids
 
